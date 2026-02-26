@@ -21,12 +21,12 @@ let UsersController = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;
     }
-    async createProfile(createProfileDto, authHeader) {
+    async createProfile(createProfileDto, authHeader, req) {
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
             throw new common_1.UnauthorizedException('Missing or invalid Authorization header');
         }
         const token = authHeader.split(' ')[1];
-        const supabase_uuid = "uuid-xxxx-xxxx";
+        const supabase_uuid = `user-test-${Date.now()}`;
         return this.usersService.createProfile(supabase_uuid, createProfileDto);
     }
 };
@@ -36,8 +36,9 @@ __decorate([
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Headers)('authorization')),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_profile_dto_1.CreateProfileDto, String]),
+    __metadata("design:paramtypes", [create_profile_dto_1.CreateProfileDto, String, Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "createProfile", null);
 exports.UsersController = UsersController = __decorate([

@@ -51,7 +51,7 @@ let UsersService = class UsersService {
             throw new common_1.InternalServerErrorException({
                 statusCode: 500,
                 error: "Internal Server Error",
-                message: "DB connection lost"
+                message: "DB connection lost",
             });
         }
     }

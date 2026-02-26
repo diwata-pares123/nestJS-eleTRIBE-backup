@@ -3,12 +3,12 @@ export declare class UsersService {
     createProfile(userId: string, dto: CreateProfileDto): Promise<{
         statusCode: number;
         data: {
+            user_id: string;
             full_name: string;
             phone_number: string;
             role: string;
-            terms_accepted_at: Date;
-            user_id: string;
             is_verified: boolean;
+            terms_accepted_at: Date;
             created_at: Date;
         };
     }>;

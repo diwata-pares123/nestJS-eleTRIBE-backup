@@ -57,7 +57,7 @@ export class UsersService {
       throw new InternalServerErrorException({
         statusCode: 500,
         error: "Internal Server Error",
-        message: "DB connection lost"
+        message: "DB connection lost",
       });
     }
   }
