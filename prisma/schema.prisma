@@ -1,0 +1,22 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Strictly matches your architecture document
+model UserProfile {
+  user_id           String   @id @default(uuid())
+  full_name         String
+  phone_number      String   @unique
+  role              String
+  is_verified       Boolean  @default(false)
+  terms_accepted_at DateTime
+  created_at        DateTime @default(now())
+
+  @@map("user_profiles")
+}
