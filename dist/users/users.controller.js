@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
+const passport_1 = require("@nestjs/passport");
 const users_service_1 = require("./users.service");
 const create_profile_dto_1 = require("./dto/create-profile.dto");
 let UsersController = class UsersController {
@@ -22,11 +23,7 @@ let UsersController = class UsersController {
         this.usersService = usersService;
     }
     async createProfile(createProfileDto, authHeader, req) {
-        if (!authHeader || !authHeader.startsWith('Bearer ')) {
-            throw new common_1.UnauthorizedException('Missing or invalid Authorization header');
-        }
-        const token = authHeader.split(' ')[1];
-        const supabase_uuid = `user-test-${Date.now()}`;
+        const supabase_uuid = req.user.id;
         return this.usersService.createProfile(supabase_uuid, createProfileDto);
     }
 };
@@ -34,6 +31,7 @@ exports.UsersController = UsersController;
 __decorate([
     (0, common_1.Post)('profile'),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Headers)('authorization')),
     __param(2, (0, common_1.Req)()),
