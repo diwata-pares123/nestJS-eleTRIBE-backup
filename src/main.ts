@@ -17,6 +17,6 @@ async function bootstrap() {
   // Enable CORS so your Next.js frontend can actually talk to this backend
   app.enableCors();
 
-  await app.listen(3000);
+  await app.listen(3001);
 }
 bootstrap();

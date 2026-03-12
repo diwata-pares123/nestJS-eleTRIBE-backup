@@ -32,13 +32,13 @@ export class UsersController {
 
     //for mock test only
     // 1. Check if the Authorization header exists
-   // if (!authHeader || !authHeader.startsWith('Bearer ')) {
-     // throw new UnauthorizedException('Missing or invalid Authorization header');
-   // }
+    //if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    // throw new UnauthorizedException('Missing or invalid Authorization header');
+   //}
 
     // for mock test only
     // 2. Extract the JWT token
-   // const token = authHeader.split(' ')[1];
+    //const token = authHeader.split(' ')[1];
 
     // for mock test only
     // 3. Extract the UUID from the token. 
