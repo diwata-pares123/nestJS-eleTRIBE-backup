@@ -5,23 +5,21 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // --- CRITICAL FIX: ADD THE PREFIX ---
-  // This makes the backend match your frontend URL: /api/v1/...
+  // 1. Set the Prefix
   app.setGlobalPrefix('api/v1');
 
-  // --- DTO VALIDATION ---
+  // 2. Setup DTO Validation
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true, 
-    // Careful with this: if your frontend sends 'user_id' in the body 
-    // but it's not in your DTO, this will throw an error.
     forbidNonWhitelisted: false, 
     transform: true, 
   }));
 
-  // Enable CORS for your Next.js frontend
+  // 3. Enable CORS for your Next.js frontend
   app.enableCors();
 
-  console.log('🚀 Server running on http://localhost:3001/api/v1');
+  // 4. Start the server (ONLY ONCE, AT THE VERY END)
   await app.listen(3001);
+  console.log('🚀 Server running on http://localhost:3001/api/v1');
 }
 bootstrap();

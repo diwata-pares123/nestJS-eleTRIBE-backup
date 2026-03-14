@@ -6,9 +6,9 @@ export declare class UsersController {
         statusCode: number;
         data: {
             user_id: string;
-            full_name: string;
             email: string;
             phone_number: string;
+            full_name: string;
             role: string;
             is_verified: boolean;
             terms_accepted_at: Date;

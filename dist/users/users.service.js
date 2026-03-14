@@ -39,20 +39,20 @@ let UsersService = class UsersService {
     }
     async createProfile(userId, dto) {
         try {
-            const existingUser = await prisma.userProfile.findUnique({
-                where: { phone_number: dto.phone_number }
-            });
-            if (existingUser)
-                throw new common_1.ConflictException("Phone number already exists");
-            const new_profile = await prisma.userProfile.create({
-                data: {
+            const profile = await prisma.userProfile.upsert({
+                where: { user_id: userId },
+                update: {
+                    full_name: dto.full_name,
+                    phone_number: dto.phone_number,
+                },
+                create: {
                     user_id: userId,
                     full_name: dto.full_name,
                     email: dto.email,
                     phone_number: dto.phone_number,
                     role: dto.role,
                     is_verified: false,
-                    terms_accepted_at: new Date(dto.terms_accepted_at),
+                    terms_accepted_at: dto.terms_accepted_at ? new Date(dto.terms_accepted_at) : new Date(),
                     driver_license_front_url: dto.driver_license_front_url,
                     driver_license_back_url: dto.driver_license_back_url,
                     vehicle_orcr_url: dto.vehicle_orcr_url,
@@ -62,7 +62,7 @@ let UsersService = class UsersService {
                     proof_of_address_url: dto.proof_of_address_url,
                 }
             });
-            return { statusCode: 201, data: new_profile };
+            return { statusCode: 201, data: profile };
         }
         catch (error) {
             console.error('❌ Database Error:', error.message);

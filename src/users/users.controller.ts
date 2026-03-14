@@ -3,7 +3,7 @@ import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { UsersService } from './users.service';
 import { CreateProfileDto, UserRole } from './dto/create-profile.dto';
 
-@Controller('api/v1/users') 
+@Controller('users') 
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 

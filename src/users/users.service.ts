@@ -35,42 +35,42 @@ export class UsersService {
   }
 
   async createProfile(userId: string, dto: CreateProfileDto) {
-    try {
-      const existingUser = await prisma.userProfile.findUnique({
-        where: { phone_number: dto.phone_number }
-      });
-      
-      if (existingUser) throw new ConflictException("Phone number already exists");
+  try {
+    // Use upsert so that if the record exists, it updates; if not, it creates.
+    // This prevents "Phone number already exists" errors during email confirmation retries.
+    const profile = await prisma.userProfile.upsert({
+      where: { user_id: userId }, // Unique identifier
+      update: {
+        full_name: dto.full_name,
+        phone_number: dto.phone_number,
+        // Update other fields as needed
+      },
+      create: {
+        user_id: userId,
+        full_name: dto.full_name,
+        email: dto.email,
+        phone_number: dto.phone_number,
+        role: dto.role,
+        is_verified: false,
+        terms_accepted_at: dto.terms_accepted_at ? new Date(dto.terms_accepted_at) : new Date(),
+        
+        // Document URLs
+        driver_license_front_url: dto.driver_license_front_url,
+        driver_license_back_url: dto.driver_license_back_url,
+        vehicle_orcr_url: dto.vehicle_orcr_url,
+        selfie_url: dto.selfie_url,
+        dti_url: dto.dti_url,
+        mayors_permit_url: dto.mayors_permit_url,
+        proof_of_address_url: dto.proof_of_address_url,
+      }
+    });
 
-      const new_profile = await prisma.userProfile.create({
-        data: {
-          user_id: userId,
-          full_name: dto.full_name,
-          email: dto.email,
-          phone_number: dto.phone_number,
-          role: dto.role,
-          is_verified: false,
-          terms_accepted_at: new Date(dto.terms_accepted_at),
-          
-          // Driver Fields
-          driver_license_front_url: dto.driver_license_front_url,
-          driver_license_back_url: dto.driver_license_back_url,
-          vehicle_orcr_url: dto.vehicle_orcr_url,
-          selfie_url: dto.selfie_url,
-
-          // Operator Fields (FIXED!)
-          dti_url: dto.dti_url,
-          mayors_permit_url: dto.mayors_permit_url,
-          proof_of_address_url: dto.proof_of_address_url,
-        }
-      });
-
-      return { statusCode: 201, data: new_profile };
-    } catch (error: any) {
-      console.error('❌ Database Error:', error.message);
-      throw new InternalServerErrorException(error.message);
-    }
+    return { statusCode: 201, data: profile };
+  } catch (error: any) {
+    console.error('❌ Database Error:', error.message);
+    throw new InternalServerErrorException(error.message);
   }
+}
 
   async getProfileByToken(authHeader: string) {
     const token = authHeader.replace('Bearer ', '').trim();

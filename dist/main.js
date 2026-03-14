@@ -12,8 +12,8 @@ async function bootstrap() {
         transform: true,
     }));
     app.enableCors();
-    console.log('🚀 Server running on http://localhost:3001/api/v1');
     await app.listen(3001);
+    console.log('🚀 Server running on http://localhost:3001/api/v1');
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

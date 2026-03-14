@@ -4,11 +4,14 @@ export declare class UsersService {
     createProfile(userId: string, dto: CreateProfileDto): Promise<{
         statusCode: number;
         data: {
-            full_name: string;
+            user_id: string;
             email: string;
             phone_number: string;
+            full_name: string;
             role: string;
+            is_verified: boolean;
             terms_accepted_at: Date;
+            created_at: Date;
             driver_license_front_url: string | null;
             driver_license_back_url: string | null;
             vehicle_orcr_url: string | null;
@@ -16,9 +19,6 @@ export declare class UsersService {
             dti_url: string | null;
             mayors_permit_url: string | null;
             proof_of_address_url: string | null;
-            user_id: string;
-            is_verified: boolean;
-            created_at: Date;
         };
     }>;
     getProfileByToken(authHeader: string): Promise<{
