@@ -8,15 +8,26 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// Strictly matches your architecture document
 model UserProfile {
   user_id           String   @id @default(uuid())
   full_name         String
+  email     String   @unique
   phone_number      String   @unique
   role              String
   is_verified       Boolean  @default(false)
   terms_accepted_at DateTime
   created_at        DateTime @default(now())
+  
+  // DRIVER FIELDS
+  driver_license_front_url String?
+  driver_license_back_url  String?
+  vehicle_orcr_url         String?
+  selfie_url               String?
 
-  @@map("user_profiles")
+  // OPERATOR FIELDS
+  dti_url                  String?
+  mayors_permit_url        String?
+  proof_of_address_url     String?
+
+  @@map("USER_FACT_TABLE")
 }

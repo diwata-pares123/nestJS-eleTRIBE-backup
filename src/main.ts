@@ -5,18 +5,23 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // --- STEP 10: ENABLE DTO VALIDATION ---
-  // This tells NestJS to automatically check all incoming POST requests 
-  // against the rules we wrote in create-profile.dto.ts.
+  // --- CRITICAL FIX: ADD THE PREFIX ---
+  // This makes the backend match your frontend URL: /api/v1/...
+  app.setGlobalPrefix('api/v1');
+
+  // --- DTO VALIDATION ---
   app.useGlobalPipes(new ValidationPipe({
-    whitelist: true, // Automatically strips out any extra fields not defined in the DTO
-    forbidNonWhitelisted: true, // Throws an error if they send fields that shouldn't be there
-    transform: true, // Automatically transforms payloads to match expected types
+    whitelist: true, 
+    // Careful with this: if your frontend sends 'user_id' in the body 
+    // but it's not in your DTO, this will throw an error.
+    forbidNonWhitelisted: false, 
+    transform: true, 
   }));
 
-  // Enable CORS so your Next.js frontend can actually talk to this backend
+  // Enable CORS for your Next.js frontend
   app.enableCors();
 
+  console.log('🚀 Server running on http://localhost:3001/api/v1');
   await app.listen(3001);
 }
 bootstrap();

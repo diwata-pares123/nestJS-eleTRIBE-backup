@@ -4,6 +4,7 @@ import {
   Matches, 
   IsEnum, 
   IsDateString, 
+  IsEmail,
   IsOptional 
 } from 'class-validator';
 
@@ -18,6 +19,11 @@ export class CreateProfileDto {
   @IsNotEmpty({ message: 'full_name is required' })
   @IsString()
   full_name: string;
+
+  @IsNotEmpty({ message: 'email is required' })
+  @IsEmail({}, { message: 'Invalid email format' })
+  email: string;
+  
 
   // STRICT VALIDATION: Must start with +63 exactly, followed by 10 digits
   @IsNotEmpty({ message: 'phone_number is required' })
@@ -69,4 +75,40 @@ export class CreateProfileDto {
   @IsOptional()
   @Matches(/^\+63\d{10}$/, { message: 'emergency_contact_number must be a valid +63 number' })
   emergency_contact_number?: string;
+
+  // ==========================================
+  // DRIVER SPECIFIC FIELDS
+  // ==========================================
+
+  @IsOptional()
+  @IsString()
+  driver_license_front_url?: string;
+
+  @IsOptional()
+  @IsString()
+  driver_license_back_url?: string;
+
+  @IsOptional()
+  @IsString()
+  vehicle_orcr_url?: string;
+
+  @IsOptional()
+  @IsString()
+  selfie_url?: string;
+
+  // ==========================================
+  // OPERATOR SPECIFIC FIELDS (ADD THESE!)
+  // ==========================================
+
+  @IsOptional()
+  @IsString()
+  dti_url?: string;
+
+  @IsOptional()
+  @IsString()
+  mayors_permit_url?: string;
+
+  @IsOptional()
+  @IsString()
+  proof_of_address_url?: string;
 }

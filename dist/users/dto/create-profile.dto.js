@@ -19,6 +19,7 @@ var UserRole;
 })(UserRole || (exports.UserRole = UserRole = {}));
 class CreateProfileDto {
     full_name;
+    email;
     phone_number;
     role;
     terms_accepted_at;
@@ -30,6 +31,13 @@ class CreateProfileDto {
     gender;
     emergency_contact_name;
     emergency_contact_number;
+    driver_license_front_url;
+    driver_license_back_url;
+    vehicle_orcr_url;
+    selfie_url;
+    dti_url;
+    mayors_permit_url;
+    proof_of_address_url;
 }
 exports.CreateProfileDto = CreateProfileDto;
 __decorate([
@@ -37,6 +45,11 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateProfileDto.prototype, "full_name", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)({ message: 'email is required' }),
+    (0, class_validator_1.IsEmail)({}, { message: 'Invalid email format' }),
+    __metadata("design:type", String)
+], CreateProfileDto.prototype, "email", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)({ message: 'phone_number is required' }),
     (0, class_validator_1.Matches)(/^\+63\d{10}$/, {
@@ -94,4 +107,39 @@ __decorate([
     (0, class_validator_1.Matches)(/^\+63\d{10}$/, { message: 'emergency_contact_number must be a valid +63 number' }),
     __metadata("design:type", String)
 ], CreateProfileDto.prototype, "emergency_contact_number", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateProfileDto.prototype, "driver_license_front_url", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateProfileDto.prototype, "driver_license_back_url", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateProfileDto.prototype, "vehicle_orcr_url", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateProfileDto.prototype, "selfie_url", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateProfileDto.prototype, "dti_url", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateProfileDto.prototype, "mayors_permit_url", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateProfileDto.prototype, "proof_of_address_url", void 0);
 //# sourceMappingURL=create-profile.dto.js.map
