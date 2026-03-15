@@ -22,6 +22,18 @@ let UsersController = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;
     }
+    async checkUser(email, phone) {
+        if (!email && !phone)
+            return { available: true };
+        const conflict = await this.usersService.checkUserExists(email, phone);
+        if (conflict === 'email') {
+            throw new common_1.ConflictException("This email address is already registered.");
+        }
+        if (conflict === 'phone') {
+            throw new common_1.ConflictException("This phone number is already registered.");
+        }
+        return { available: true };
+    }
     async createProfile(body, files) {
         const supabase_uuid = body.user_id;
         if (!supabase_uuid)
@@ -80,6 +92,14 @@ let UsersController = class UsersController {
     }
 };
 exports.UsersController = UsersController;
+__decorate([
+    (0, common_1.Get)('check-user'),
+    __param(0, (0, common_1.Query)('email')),
+    __param(1, (0, common_1.Query)('phone')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "checkUser", null);
 __decorate([
     (0, common_1.Post)('profile'),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),

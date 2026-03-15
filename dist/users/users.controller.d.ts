@@ -2,6 +2,9 @@ import { UsersService } from './users.service';
 export declare class UsersController {
     private readonly usersService;
     constructor(usersService: UsersService);
+    checkUser(email: string, phone: string): Promise<{
+        available: boolean;
+    }>;
     createProfile(body: any, files: Array<Express.Multer.File>): Promise<{
         statusCode: number;
         data: {

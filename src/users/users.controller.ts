@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Headers, HttpCode, HttpStatus, UseInterceptors, UploadedFiles, BadRequestException, NotFoundException } from '@nestjs/common';
+import { Controller, Post, Get, Query, Body, Headers, HttpCode, HttpStatus, UseInterceptors, UploadedFiles, BadRequestException, NotFoundException, ConflictException } from '@nestjs/common';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { UsersService } from './users.service';
 import { CreateProfileDto, UserRole } from './dto/create-profile.dto';
@@ -6,6 +6,23 @@ import { CreateProfileDto, UserRole } from './dto/create-profile.dto';
 @Controller('users') 
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  // 👇 NEW PRE-CHECK ROUTE 👇
+  @Get('check-user')
+  async checkUser(@Query('email') email: string, @Query('phone') phone: string) {
+    if (!email && !phone) return { available: true };
+    
+    const conflict = await this.usersService.checkUserExists(email, phone);
+    
+    if (conflict === 'email') {
+      throw new ConflictException("This email address is already registered.");
+    }
+    if (conflict === 'phone') {
+      throw new ConflictException("This phone number is already registered.");
+    }
+    
+    return { available: true };
+  }
 
   @Post('profile')
   @HttpCode(HttpStatus.CREATED) 

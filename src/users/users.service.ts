@@ -34,6 +34,26 @@ export class UsersService {
     return publicUrlData.publicUrl;
   }
 
+  // 👇 NEW METHOD TO CHECK FOR DUPLICATES 👇
+  async checkUserExists(email: string, phoneNumber: string): Promise<'email' | 'phone' | null> {
+    const user = await prisma.userProfile.findFirst({
+      where: {
+        OR: [
+          { email: email },
+          { phone_number: phoneNumber }
+        ]
+      }
+    });
+
+    if (user) {
+      // Return exactly which field caused the conflict
+      if (user.email === email) return 'email';
+      if (user.phone_number === phoneNumber) return 'phone';
+    }
+    
+    return null;
+  }
+
   async createProfile(userId: string, dto: CreateProfileDto) {
   try {
     // Use upsert so that if the record exists, it updates; if not, it creates.

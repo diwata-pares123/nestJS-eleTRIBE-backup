@@ -37,6 +37,23 @@ let UsersService = class UsersService {
         const { data: publicUrlData } = supabase.storage.from('documents').getPublicUrl(fileName);
         return publicUrlData.publicUrl;
     }
+    async checkUserExists(email, phoneNumber) {
+        const user = await prisma.userProfile.findFirst({
+            where: {
+                OR: [
+                    { email: email },
+                    { phone_number: phoneNumber }
+                ]
+            }
+        });
+        if (user) {
+            if (user.email === email)
+                return 'email';
+            if (user.phone_number === phoneNumber)
+                return 'phone';
+        }
+        return null;
+    }
     async createProfile(userId, dto) {
         try {
             const profile = await prisma.userProfile.upsert({

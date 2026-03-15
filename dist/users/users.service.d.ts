@@ -1,6 +1,7 @@
 import { CreateProfileDto } from './dto/create-profile.dto';
 export declare class UsersService {
     uploadFile(file: Express.Multer.File, userId: string, fileType: string): Promise<string | null>;
+    checkUserExists(email: string, phoneNumber: string): Promise<'email' | 'phone' | null>;
     createProfile(userId: string, dto: CreateProfileDto): Promise<{
         statusCode: number;
         data: {
